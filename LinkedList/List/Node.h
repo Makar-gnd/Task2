@@ -6,8 +6,10 @@
 * @param data Данные элемента.
 * @param next Указатель на следующий элемент.
 */
-struct Node {
-	int Data;
-	Node* Next;
-	Node(int data, Node* next = nullptr);
+struct Node
+{
+	Node(int data = 0, Node* pNext = nullptr);
+	Node* pNext;
+	int data;
 };
+
