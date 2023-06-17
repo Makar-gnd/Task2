@@ -2,23 +2,21 @@
 #include "Node.h"
 #include <iostream>
 #include <exception>
-/*
-* @brief Конструктор List.
-* @param head Указатель на первый элемент.
-* @param size размер списка.
-*/
+#include <string>
+#include <sstream>
+
+
 class List
 {
-	private:
+private:
 	int size;
 	Node* head;
-
-	public:
+public:
 
 	/*
 	* @brief Пустой конструктор.
 	*/
-		List();
+	List();
 
 	/*
 	* @brief Пустой деструктор.
@@ -26,12 +24,14 @@ class List
 	~List();
 
 	/*
-	* @brief Функция удаляющая элемент с конца списка.
+	* @brief Конструктор списка через initializer_list.
+	* @param list Список.
 	*/
-	void PopBack();
+	List(std::initializer_list<int> list);
 
 	/*
 	* @brief Функция удаляющая первый элемент списка.
+	* @exception Если список пуст.
 	*/
 	void PopFront();
 
@@ -56,7 +56,44 @@ class List
 	* @brief Переопределение оператора квадратных скобок.
 	* @param index индекс элемента списка.
 	*/
-	int& operator[] (const size_t index);
+	int& operator[] (int index);
 
+	/*
+	* @brief Функция которая выводит список в виде строки.
+	* @return Возвращает строку.
+	*/
+	std::string ToString() const;
+
+	/*
+	* @brief Переопределение оператора сравнения.
+	* @param list Список с которым сравниваем.
+	* @return this->ToString() == list.ToString().
+	*/
+	bool operator==(List& list);
+
+	/*
+	* @brief Функция добавляющая элемент в начало списка.
+	* @param data Данные которые добавляются в список.
+	*/
+	void PushFront(int data);
+
+	/*
+	* @brief Конструктор копирования.
+	* @param other Принимаемый объект.
+	*/
+	List(const List& other);
+
+	/*
+	* @brief Перегрузка оператора для копирования.
+	* @param other Список для копирования.
+	* @return Скопированный список.
+	*/
+	List operator=(const List& other);
+	
+	/*
+	* @brief Функция проверающая пустой список или нет.
+	* @return false Если список пуст.
+	*/
+	bool IsEmpty() const;
 };
 

@@ -1,13 +1,21 @@
 ﻿#include"List.h"
 
-List::List() : head(nullptr), size(0)
+List::List() : size(0), head(nullptr)
 {
-	
+
 }
 
 List::~List()
 {
-	
+	Clear();
+}
+
+List::List(std::initializer_list<int> list) :head(nullptr), size(0)
+{
+	for (int data : list)
+	{
+		this->PushBack(data);
+	}
 }
 
 void List::PopFront()
@@ -43,15 +51,22 @@ void List::PushBack(int data)
 	size++;
 }
 
+void List::Clear()
+{
+	while (size)
+	{
+		PopFront();
+	}
+};
+
 size_t List::GetSize()
 {
 	return size;
 }
 
-
-int& List::operator[](const size_t index)
+int& List::operator[](int index)
 {
-	size_t counter = 0;
+	int counter = 0;
 	Node* current = this->head;
 	while (current != nullptr)
 	{
@@ -59,26 +74,79 @@ int& List::operator[](const size_t index)
 		{
 			return current->data;
 		}
-	current = current->pNext;
-	counter++;
+		current = current->pNext;
+		counter++;
 	}
 };
 
-void List::Clear()
+std::string List::ToString() const
 {
-	while (size)
+	std::stringstream buffer;
+	Node* current = this->head;
+	while (current != nullptr)
 	{
-		PopFront();
+		buffer << current->data;
+		current = current->pNext;
+	}
+	return buffer.str();
+}
+
+bool List::operator==(List& list)
+{
+	return (this->ToString() == list.ToString());
+}
+
+void List::PushFront(int data)
+{
+	if (head == nullptr)
+	{
+		head = new Node(data);
+	}
+	else
+	{
+		head = new Node(data, head);
+	}
+	size++;
+}
+
+List::List(const List& other) :size(0), head(nullptr)
+{
+	Node* _pNext = nullptr;
+	for (Node* _node = other.head; _node != nullptr; _node = _node->pNext)
+	{
+		Node* item = new Node(_node->data);
+		if (!head)
+		{
+			head = item;
+		}
+		else
+		{
+			_pNext->pNext = item;
+		}
+		_pNext = item;
+		size++;
 	}
 }
 
-void List::PopBack()
+List List::operator=(const List& other)
 {
-	Node* current = this->head;
-	while (current->pNext != nullptr)
+	if (!this->IsEmpty())
 	{
+		this->Clear();
+	}
+	Node* current = other.head;
+	while (current != nullptr)
+	{
+		this->PushBack(current->data);
 		current = current->pNext;
 	}
-	delete current;
-	size--;
+	return *this;
 }
+
+bool List::IsEmpty() const
+{
+	return this->head == nullptr;
+}
+;
+
+
